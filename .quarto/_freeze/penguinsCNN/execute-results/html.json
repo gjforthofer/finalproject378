@@ -1,0 +1,12 @@
+{
+  "hash": "deb81e35edec85db4401d88a58dba36c",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "::: {#ee0d6143-212f-4f5f-b551-e112157e5904 .cell execution_count=1}\n``` {.python .cell-code}\n1+1\n```\n\n::: {.cell-output .cell-output-display execution_count=1}\n```\n2\n```\n:::\n:::\n\n\n\n",
+    "supporting": [
+      "penguinsCNN_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

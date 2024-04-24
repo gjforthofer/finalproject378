@@ -1,0 +1,6 @@
+project:
+  type: website
+
+execute:
+  enabled: true
+  engine: jupyter
