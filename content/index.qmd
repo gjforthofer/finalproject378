@@ -1,0 +1,13 @@
+---
+title: "Home"
+---
+
+# Table of Contents
+
+
+
+- [Go to General Data Analysis](./data-analysis.qmd)
+- [Linear Regressions](./LinearR.qmd)
+- [Want a poem?](./poem.qmd)
+- [Bee Movie](./test.qmd)
+

@@ -1,0 +1,108 @@
+---
+title: "Penguin Species Analysis"
+format:
+  html:
+    code-fold: true
+    code-tools: true
+output:
+  quarto::quarto_html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    warn: false   # Suppress warnings globally
+---
+
+
+
+
+
+```{r, echo=FALSE}
+suppressWarnings({
+
+library(palmerpenguins)
+library(ggplot2)
+library(RColorBrewer)
+library(corrplot)
+library(ggmap)
+library(Rtsne)
+library(cluster)
+library(caret)
+library(network)
+
+data("penguins")
+})
+
+```
+
+# K-Means Clustering
+
+The following R script performs k-means clustering on the penguins dataset, after pre-processing to ensure that only numeric data is considered and missing values are removed. Post-clustering, we integrate the resulting labels back into the original data.
+
+The scatterplot generated using ggplot2 illustrates the distribution of penguin species by their bill measurements. The plot delineates species clusters quite well along bill length and depth axes, with species acting as a natural cluster proxy. It's an effective visualization for validating our clustering approach against known classifications.
+
+```{r}
+suppressWarnings({
+  # Your R code here
+
+# Remove non-numeric columns and NA values as before
+numeric_data <- penguins[, sapply(penguins, is.numeric)]
+numeric_data <- na.omit(numeric_data)
+
+# Perform k-means clustering
+kmeans_result <- kmeans(numeric_data, centers = 3)
+
+# Add the cluster results back to the filtered numeric data
+numeric_data$cluster <- kmeans_result$cluster
+
+# Merge back with the original data if needed
+penguins$cluster <- NA  # Initialize clusters with NA
+indices <- match(rownames(numeric_data), rownames(penguins))  # Find matching indices
+penguins$cluster[indices] <- numeric_data$cluster  # Assign clusters
+})
+```
+
+```{r}
+df_filtered <- df %>% na.omit()
+# Plot using ggplot2 with species color coding
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point() +
+  labs(title = "Cluster Analysis of Palmer Penguins Dataset",
+       x = "Bill Length (mm)",
+       y = "Bill Depth (mm)",
+       color = "Species") +  # This ensures the legend is titled 'Species'
+  theme_minimal()
+```
+# Yearly Distribution by Species
+
+The script employs a categorical approach to visualize the distribution of penguin species over a set of years. The transformation of the year variable into a factor signifies its categorical nature in the dataset. 'geom_bar(stat = "count")' generates a bar for each level of the factor variable, where the height represents the frequency of observations. The dodge position argument separates bars within the same year, facilitating an immediate visual comparison of species counts across the years. The clarity of the dodged bar chart is particularly beneficial from a statistical standpoint as it avoids the visual complexity that could arise from stacked bars, allowing for straightforward interpretation of year-to-year changes in species counts. The title and axis labels convey the focus of the plot accurately, depicting an annual, rather than age-related, distribution.
+ 
+```{r}
+
+ggplot(penguins, aes(x = as.factor(year), fill = species)) +
+  geom_bar(position = "dodge", stat = "count") +
+  labs(title = "Yearly Distribution of Penguins by Species",
+       x = "Year",
+       y = "Count",
+       fill = "Species")
+
+```
+
+# Bill Length Boxplot
+
+This code creates a visual comparison of bill lengths among different species of penguins using a boxplot. It allows for easy comparison of the central tendency and spread of bill lengths within each species, as well as identification of any potential outliers. This type of plot is useful for exploring the distribution of a numeric variable (bill length) across multiple categories (species) and identifying any patterns or differences among them.
+
+```{r}
+
+ggplot(penguins, aes(species, bill_length_mm)) +
+  geom_boxplot() +
+  labs(title = "Species Comparison Boxplot of Bill Length",
+       x = "Species",
+       y = "Bill Length (mm)")
+
+```
+
+
+
+
+
+

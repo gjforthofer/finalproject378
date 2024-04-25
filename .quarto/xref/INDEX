@@ -16,5 +16,14 @@
   },
   "content/poem.qmd": {
     "poem.html": "13073e19"
+  },
+  "content/test.qmd": {
+    "test.html": "6d0d199f"
+  },
+  "content/LinearR.qmd": {
+    "LinearR.html": "fddbd5b0"
+  },
+  "content/lr.qmd": {
+    "lr.html": "12a28494"
   }
 }

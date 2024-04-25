@@ -2,7 +2,6 @@ project:
   type: website
 
 title: "My Expert-Level Quarto Website"
-subtitle: "This took way too long."
 
 format:
   html:
@@ -28,8 +27,12 @@ website:
         href: content/index.qmd
       - text: "Data"
         href: content/data-analysis.qmd
-      - text: "poem"
+      - text: "Linear Regression"
+        href: content/LinearR.qmd
+      - text: "Poem"
         href: content/poem.qmd
+      - text: "Bee Movie"
+        href: content/test.qmd
     right:
       - icon: fa fa-envelope
         href: "mailto:contact@myquartowebsite.com"

@@ -1,0 +1,133 @@
+---
+title: "linearR"
+format: html
+editor: visual
+output:
+  warnings = FALSE
+---
+
+## 
+
+# Linear Regressions
+
+Firstly, a basic linear regression will be shown, with accuracy and precision measured using a variety of techniques.
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(palmerpenguins)
+library(nnet)  # Load the nnet package for multinomial logistic regression
+
+# Prepare the data
+data(penguins)
+penguins <- na.omit(penguins)  # Remove NA values to avoid errors in modeling
+
+# Fit the multinomial logistic regression model
+model <- multinom(species ~ bill_length_mm, data = penguins)
+
+# Summary of the model
+summary(model)
+
+# Compute predicted probabilities
+penguins$predicted_prob <- predict(model, type = "probs")
+
+# Create a new data frame for plotting predicted probabilities
+plot_data <- data.frame(
+  bill_length_mm = penguins$bill_length_mm,
+  species = penguins$species,
+  Chinstrap = penguins$predicted_prob[, "Chinstrap"],
+  Gentoo = penguins$predicted_prob[, "Gentoo"],
+  Adelie = penguins$predicted_prob[, "Adelie"]  # Add Adelie probabilities
+)
+
+# Plot predicted probabilities
+ggplot(plot_data, aes(x = bill_length_mm)) +
+  geom_line(aes(y = Chinstrap, color = "Chinstrap"), linewidth = 1) +
+  geom_line(aes(y = Gentoo, color = "Gentoo"), linewidth = 1) +
+  geom_line(aes(y = Adelie, color = "Adelie"), linewidth = 1) +  # Add a line for Adelie
+  labs(title = "Predicted Probability of Species by Bill Length",
+       x = "Bill Length (mm)",
+       y = "Probability") +
+  scale_color_manual(values = c("Chinstrap" = "blue", "Gentoo" = "red", "Adelie" = "green")) +  # Add color for Adelie
+  theme_minimal()
+
+```
+
+The model has successfully converged, indicating a stable solution with significant effects of bill length on species classification. However, the model's overall effectiveness is unclear without a baseline comparison, and its AIC of 336.7588 suggests there might be room for improvement.
+
+To potentially improve this model:
+
+1.  **Include More Predictors**: Adding other relevant variables like bill depth or flipper length could provide a more comprehensive understanding.
+
+2.  **Model Interaction Effects**: Interactions between variables might reveal more complex relationships influencing species classification.
+
+3.  **Cross-Validation**: Use techniques like cross-validation to assess the model's performance on unseen data and avoid overfitting.
+
+4.  **Compare Models**: Evaluate other models or use different statistical approaches (like decision trees or random forests) for potentially better predictions.
+
+```{r}
+# Load necessary libraries
+library(palmerpenguins)  # Contains the dataset
+library(nnet)            # For multinomial logistic regression
+library(ggplot2)         # For plotting
+
+# Load and prepare the data
+data(penguins)
+penguins <- na.omit(penguins)  # Remove rows with NA values to avoid errors
+
+# Fit the multinomial logistic regression model with both predictors
+model <- multinom(species ~ bill_length_mm + body_mass_g, data = penguins)
+
+# Summary of the model to see coefficients and statistics
+summary(model)
+
+# Optionally, plot predicted probabilities if needed
+# Compute predicted probabilities for visualization
+penguins$predicted_prob <- predict(model, type = "probs")
+
+# Create a new data frame for plotting predicted probabilities
+plot_data <- data.frame(
+  bill_length_mm = penguins$bill_length_mm,
+  body_mass_g = penguins$body_mass_g,
+  species = penguins$species,
+  Chinstrap = penguins$predicted_prob[, "Chinstrap"],
+  Gentoo = penguins$predicted_prob[, "Gentoo"],
+  Adelie = penguins$predicted_prob[, "Adelie"]
+)
+
+# Example plot: Predicted probabilities vs. bill length colored by species
+ggplot(plot_data, aes(x = bill_length_mm, color = species)) +
+  geom_line(aes(y = Chinstrap), linewidth = 1, linetype = "solid") +
+  geom_line(aes(y = Gentoo), linewidth = 1, linetype = "dashed") +
+  geom_line(aes(y = Adelie), linewidth = 1, linetype = "dotted") +
+  labs(title = "Predicted Probability of Species by Bill Length and Body Mass",
+       x = "Bill Length (mm)",
+       y = "Probability") +
+  scale_color_manual(values = c("Chinstrap" = "blue", "Gentoo" = "red", "Adelie" = "green")) +
+  theme_minimal()
+
+```
+
+This model, though is looks absolutely bizzare, which includes both bill length and body mass as predictors, appears to be significantly better than the previous model that only included bill length. Here's a breakdown of why this might be the case:
+
+1.  **Improved Fit**: The final value of the residual deviance is much lower (37.719086 compared to 164.379420), indicating a much better fit to the data. Lower residual deviance generally signifies that the model explains a larger portion of the variance.
+
+2.  **Lower AIC**: The Akaike Information Criterion (AIC) has decreased from 336.7588 to 87.43817. A lower AIC value suggests that the model provides a better balance between goodness of fit and complexity, making it a more efficient model.
+
+3.  **Convergence and Iterations**: The model has iterated through more steps (60 iterations) and still converged, which often indicates that the model is effectively optimizing and dealing with more complexity.
+
+4.  **Significance of Coefficients**: The coefficients for both predictors across species are substantial, and their standard errors are quite low, indicating strong and reliable effects. Specifically, the coefficient of bill length for Chinstrap is notably high, showing a significant impact on distinguishing it from the baseline category (Adelie).
+
+This model is better because it captures more nuances in the data by considering an additional relevant feature (body mass). It demonstrates a significant improvement in predictive accuracy and model efficiency as indicated by the lower deviance and AIC scores.
+
+**Possible Improvements:**
+
+While the model is already improved, further enhancements could involve:
+
+-   **Inclusion of Additional Predictors**: Further explore other measurements, such as flipper length or sex, if not already included.
+
+-   **Interaction Terms**: Investigating possible interactions between predictors might reveal more complex relationships.
+
+-   **Cross-validation**: To ensure the model's robustness and to avoid overfitting, performing cross-validation could validate these results across different subsets of data.
+
+As demonstrated, the model can absolutely be improved through continuous refinement and more complex systems. However, the above graphs demonstrate how multi-linear regressions help to predict variables, both numerical or categorical.
