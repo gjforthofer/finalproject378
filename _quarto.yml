@@ -1,6 +1,6 @@
 project:
   type: website
-
+theme: jekyll-theme-minimal
 execute:
   enabled: true
   engine: jupyter
