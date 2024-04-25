@@ -1,5 +1,0 @@
-# Analysis of Penguin Data Using CNN
-
-This page includes our Jupyter notebook that applies a convolutional neural network to penguin data.
-
-```{include} penguinsCNN.ipynb

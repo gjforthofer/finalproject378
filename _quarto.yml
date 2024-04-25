@@ -1,7 +1,40 @@
 project:
   type: website
-theme: jekyll-theme-minimal
+
+title: "My Expert-Level Quarto Website"
+subtitle: "This took way too long."
+
+format:
+  html:
+    theme: paper
+    toc: true
+    toc-depth: 3
+    toc-float: 
+      collapsed: false
+      smooth-scroll: true
+    highlight-style: github
+    number-sections: true
+    code-fold: true
+
+editor: visual
+
+output-dir: "_site"
+
+website:
+  navbar:
+    title: "Final Project - Math 378"
+    left:
+      - text: "Home"
+        href: content/index.qmd
+      - text: "Data"
+        href: content/data-analysis.qmd
+      - text: "poem"
+        href: content/poem.qmd
+    right:
+      - icon: fa fa-envelope
+        href: "mailto:contact@myquartowebsite.com"
+  favicon: "favicon.ico"
+
 execute:
   enabled: true
-  engine: jupyter
-output-dir: docs
+  cache: true
