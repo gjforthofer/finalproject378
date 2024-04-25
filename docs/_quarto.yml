@@ -4,3 +4,4 @@ project:
 execute:
   enabled: true
   engine: jupyter
+output-dir: docs
